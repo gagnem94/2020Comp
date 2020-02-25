@@ -34,11 +34,12 @@ public class VisionAlign extends CommandBase {
     driveSub = drive;
     visionSub = vision;
     ledSub = led;
-    // visionSub.setLed(3.0);
-    visionSub.setCamMode(0.0);
     addRequirements(driveSub);
     addRequirements(visionSub);
     addRequirements(ledSub);
+
+    visionSub.setLed(3.0);
+    visionSub.setCamMode(0.0);
 
     SmartDashboard.putNumber("Steering kP", steer_kp);
     SmartDashboard.putNumber("Drive kP", drive_kp);
@@ -58,8 +59,8 @@ public class VisionAlign extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double yaw = visionSub.getTy()*drive_kp;
-    double throttle = visionSub.getTx()*steer_kp;
+    double throttle = visionSub.getTy()*drive_kp;
+    double yaw = visionSub.getTx()*steer_kp;
 
     
 
@@ -120,8 +121,8 @@ public class VisionAlign extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     driveSub.drive(0.0, 0.0);
-    //visionSub.setLed(1.0);
-    //visionSub.setCamMode(1.0);
+    visionSub.setLed(1.0);
+    visionSub.setCamMode(1.0);
   }
 
   // Returns true when the command should end.

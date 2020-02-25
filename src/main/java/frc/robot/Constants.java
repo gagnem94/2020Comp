@@ -43,12 +43,12 @@ public final class Constants {
     // Controller constants
     public static final int DRIVER_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
-    public static final double DRIVER_CONTROLLER_DEADBAND = 0.5;
-    public static final double OPERATOR_CONTROLLER_DEADBAND = 0.5;
+    public static final double DRIVER_CONTROLLER_DEADBAND = 0.1;
+    public static final double OPERATOR_CONTROLLER_DEADBAND = 0.1;
 
     // LED constants
     public static final int LED_PWM_PORT = 0;
-    public static final int LED_COUNT = 60;
+    public static final int LED_COUNT = 80;
 
     // Limelight constants
     public static final double LIMELIGHT_YAW_THRESHOLD = 1.0;
@@ -59,7 +59,7 @@ public final class Constants {
     public static final double kvVoltSecondsPerMeter = 0.0;
     public static final double kaVoltSecondsSquaredPerMeter = 0.0;
 
-    public static final double trackWidth = 0.0;
+    public static final double trackWidth = 0.0; // take distance between seets of wheels and add a few inches, keep testing to see what the actual track width is
     public static final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(trackWidth);
     public static final double maxSpeedMetersPerSecond = 0.0;
     public static final double maxAccelMetersPerSecondSquare = 0.0;

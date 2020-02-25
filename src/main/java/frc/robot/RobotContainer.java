@@ -9,9 +9,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.JoystickDrive;
+import frc.robot.commands.SpinUpShooter;
 import frc.robot.commands.VisionAlign;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -39,6 +42,9 @@ public class RobotContainer {
   private XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_PORT);
   private XboxController operatorController = new XboxController(Constants.OPERATOR_CONTROLLER_PORT);
 
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private double shooterRPM = SmartDashboard.getNumber("Target RPM", 0.0);
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -55,7 +61,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(driverController, XboxController.Button.kBumperLeft.value).whenPressed(() -> drive.setReversed());
+    new JoystickButton(driverController, XboxController.Button.kBumperLeft.value).whenPressed(() -> drive.toggleReversed());
     new JoystickButton(driverController, XboxController.Button.kB.value).whenPressed(() -> drive.setMaxOutput(0.75));
     new JoystickButton(driverController, XboxController.Button.kX.value).whenPressed(() -> drive.setMaxOutput(1.0));
     new JoystickButton(driverController, XboxController.Button.kA.value).whileHeld(new VisionAlign(drive, vision, leds));
@@ -63,7 +69,7 @@ public class RobotContainer {
     new JoystickButton(operatorController, XboxController.Button.kA.value).whenReleased(() -> intake.intakeAndElevateOff());
     new JoystickButton(operatorController, XboxController.Button.kB.value).whenPressed(() -> pneumatics.intakeDown());
     new JoystickButton(operatorController, XboxController.Button.kX.value).whenPressed(() -> pneumatics.intakeUp());
-    new JoystickButton(operatorController, XboxController.Button.kBumperRight.value).whileHeld(() -> shooter.spinAuto());
+    new JoystickButton(operatorController, XboxController.Button.kBumperRight.value).whileHeld(new SpinUpShooter(shooter, shooterRPM));
     new JoystickButton(operatorController, XboxController.Button.kBumperRight.value).whenReleased(() -> shooter.shooterOff()); 
   }
 
@@ -76,6 +82,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return autoChooser.getSelected();
   }
 }

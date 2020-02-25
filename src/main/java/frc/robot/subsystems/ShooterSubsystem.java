@@ -30,9 +30,12 @@ public class ShooterSubsystem extends SubsystemBase {
   private PIDController leftPID = new PIDController(0.00015, 0.0002, 0.000025);
   private PIDController rightPID = new PIDController(0.00015, 0.0002, 0.000025);
 
+    // 3000 rpm at initiation line
+
   public ShooterSubsystem() {
     rightShooter.restoreFactoryDefaults();
-    rightShooter.setInverted(true);
+    leftShooter.restoreFactoryDefaults();
+    leftShooter.setInverted(true);
 
     spinManual(0.05);
     SmartDashboard.putNumber("Left Shooter kP", leftkP);
@@ -58,17 +61,13 @@ public class ShooterSubsystem extends SubsystemBase {
     rightShooter.set(speed);
   }
 
-  public void spinAuto() {
-    double targetRPM = SmartDashboard.getNumber("Target RPM", 0.0);
+  public void spinAuto(double targetRPM) {
     double left = leftPID.calculate(getLeftRPM(), targetRPM);
     double right = rightPID.calculate(getRightRPM(), targetRPM);
 
     if (left < 0) {
       left = 0.0;
     }
-
-    SmartDashboard.putNumber("Left", left);
-    SmartDashboard.putNumber("Right", right);
     leftShooter.set(left);
     rightShooter.set(right);
     if (leftPID.atSetpoint() && rightPID.atSetpoint()) {

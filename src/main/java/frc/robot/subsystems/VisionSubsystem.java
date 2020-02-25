@@ -15,7 +15,6 @@ import frc.robot.Constants;
 public class VisionSubsystem extends SubsystemBase {
   private NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
   private double tx, ty, tv;
-  private String visionTarget = "Initiation Line";
 
   public VisionSubsystem() {
     tx = limelight.getEntry("tx").getDouble(0.0);
@@ -34,8 +33,9 @@ public class VisionSubsystem extends SubsystemBase {
     limelight.getEntry("camMode").setNumber(state);
   }
 
-  public void setTarget(String target) {
-    visionTarget = target;
+  public void setPipeline(double pipeline) {
+    // 0 = initiation line, 1 = under trench
+    limelight.getEntry("pipeline").setNumber(pipeline);
   }
 
   public double getTx() {

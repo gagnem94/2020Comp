@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -33,12 +34,18 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final DifferentialDriveOdometry odometry;
 
-  // 3250 rpm at initiation line
-
   private boolean isReversed = false;
   private double maxOutput = 0.5;
 
   public DriveSubsystem() {
+    leftMaster.restoreFactoryDefaults();
+    leftSlave.restoreFactoryDefaults();
+    rightMaster.restoreFactoryDefaults();
+    rightSlave.restoreFactoryDefaults();
+
+    rightMaster.setInverted(true);
+    rightSlave.setInverted(true);
+
     leftSlave.follow(leftMaster);
     rightSlave.follow(rightMaster);
 
@@ -62,10 +69,8 @@ public class DriveSubsystem extends SubsystemBase {
     return navx.getRate();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    odometry.update(Rotation2d.fromDegrees(getHeading()), leftEnc.getPosition(), rightEnc.getPosition());
+  public double getAvgDistance() {
+    return (leftEnc.getPosition() + rightEnc.getPosition()) / 2;
   }
 
   public void drive(double throttle, double yaw) {
@@ -108,11 +113,19 @@ public class DriveSubsystem extends SubsystemBase {
     return isReversed;
   }
 
-  public void setReversed() {
+  public void toggleReversed() {
     isReversed = !isReversed;
   }
 
   public void setMaxOutput(double maxOutput) {
     this.maxOutput = maxOutput;
   }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    odometry.update(Rotation2d.fromDegrees(getHeading()), leftEnc.getPosition(), rightEnc.getPosition());
+    SmartDashboard.putBoolean("Drive Reversed", isReversed());
+  }
+
 }
