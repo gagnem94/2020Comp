@@ -16,12 +16,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private WPI_VictorSPX sideRollers = new WPI_VictorSPX(Constants.SIDE_ROLLER_INTAKE_CAN_ID);
   private WPI_VictorSPX elevatorMotor = new WPI_VictorSPX(Constants.ELEVATOR_MOTOR_CAN_ID);
+  private WPI_VictorSPX dingusMotor = new WPI_VictorSPX(Constants.DINGUS_MOTOR_CAN_ID);
 
   public IntakeSubsystem() {
   }
 
   public void intakeOn() {
-    sideRollers.set(1.0);
+    sideRollers.set(-1.0);
   }
 
   public void intakeOff() {
@@ -37,13 +38,15 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void intakeAndElevate() {
-    sideRollers.set(1.0);
+    sideRollers.set(-1.0);
     elevatorMotor.set(0.5);
-  }
+    dingusMotor.set(-0.3);
+    }
 
   public void intakeAndElevateOff() {
     sideRollers.set(0.0);
     elevatorMotor.set(0.0);
+    dingusMotor.set(0.0);
   }
 
   @Override

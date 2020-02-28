@@ -35,7 +35,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final DifferentialDriveOdometry odometry;
 
   private boolean isReversed = false;
-  private double maxOutput = 0.5;
+  private double maxOutput = 1.0;
 
   public DriveSubsystem() {
     leftMaster.restoreFactoryDefaults();
@@ -49,8 +49,8 @@ public class DriveSubsystem extends SubsystemBase {
     leftSlave.follow(leftMaster);
     rightSlave.follow(rightMaster);
 
-    leftEnc.setPositionConversionFactor(0.0); // change these
-    rightEnc.setPositionConversionFactor(0.0);
+    leftEnc.setPositionConversionFactor(0.4); // change these
+    rightEnc.setPositionConversionFactor(0.4);
 
     resetEncoders();
     resetGyro();
@@ -73,14 +73,18 @@ public class DriveSubsystem extends SubsystemBase {
     return (leftEnc.getPosition() + rightEnc.getPosition()) / 2;
   }
 
+  public double getAngle() {
+    return navx.getAngle();
+  }
+
   public void drive(double throttle, double yaw) {
-    if (isReversed) {
-      leftMaster.set(maxOutput * (yaw-throttle));
-      rightMaster.set(maxOutput * (yaw+throttle));
+    if (isReversed()) {
+      leftMaster.set(maxOutput * (throttle+yaw));
+      rightMaster.set(maxOutput * (throttle-yaw));
 
     } else {
-      leftMaster.set(maxOutput * (yaw+throttle));
-      rightMaster.set(maxOutput * (yaw-throttle));
+      leftMaster.set(maxOutput * (-throttle+yaw)); //-throttle+yaw
+      rightMaster.set(maxOutput * (-throttle-yaw)); //-throttle-yaw
     }
     
   }

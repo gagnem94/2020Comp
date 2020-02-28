@@ -7,76 +7,43 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
 
-public class JoystickDrive extends CommandBase {
+public class AutoDrive extends CommandBase {
 
   private DriveSubsystem driveSub;
-  private XboxController driveController;
-  private LEDSubsystem ledSub;
+  private double distanceInMetres;
 
-  public JoystickDrive(DriveSubsystem drive, LEDSubsystem led, XboxController controller) {
+  public AutoDrive(DriveSubsystem drive, double distance) {
     // Use addRequirements() here to declare subsystem dependencies.
     driveSub = drive;
-    ledSub = led;
-    driveController = controller;
+    distanceInMetres = distance;
     addRequirements(driveSub);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    driveSub.drive(-0.6, 0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ledSub.teleop();
-    double throttle = -driveController.getRawAxis(1);
-    double yaw = driveController.getRawAxis(4);
-
-    if (Math.abs(throttle) < Constants.DRIVER_CONTROLLER_DEADBAND) {
-      throttle = 0.0;
-    }
-
-    if (Math.abs(yaw) < Constants.DRIVER_CONTROLLER_DEADBAND) {
-      yaw = 0.0;
-    }
-
-    if (throttle > 1) {
-      throttle = 1;
-    }
-
-    if (throttle < -1) {
-      throttle = -1;
-    }
-
-    if (yaw > 1) {
-      yaw = 1;
-    }
-
-    if (yaw < -1) {
-      yaw = -1;
-    }
-
-    driveSub.drive(throttle, yaw);
-
+    double headingError = driveSub.getAngle();
+    driveSub.drive(-0.6, headingError);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveSub.stop();
+    driveSub.drive(0.0, 0.0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return driveSub.getAvgDistance() == distanceInMetres;
   }
 }

@@ -39,6 +39,13 @@ public class LEDSubsystem extends SubsystemBase {
     led.setData(ledBuffer);
   }
 
+  public void teleop() {
+    for (int i = 0; i < ledBuffer.getLength(); i++) { // pattern: solid red
+      ledBuffer.setRGB(i, 255, 255, 255);
+    }
+    led.setData(ledBuffer);
+  }
+
   public void autoRunning() {
     for (int i = 0; i < ledBuffer.getLength(); i++) { // pattern: solid blue
       ledBuffer.setRGB(i, 0, 0, 255);

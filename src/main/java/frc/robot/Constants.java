@@ -27,14 +27,13 @@ public final class Constants {
     // Intake/Elevator constants
     public static final int SIDE_ROLLER_INTAKE_CAN_ID = 5;
     public static final int ELEVATOR_MOTOR_CAN_ID = 6;
+    public static final int DINGUS_MOTOR_CAN_ID = 10;
 
     // Pneumatic constants
     public static final int INTAKE_CYLINDER_FORWARD = 0;
     public static final int INTAKE_CYLINDER_REVERSE = 1;
-    public static final int SHOOTER_COVER_FORWARD_1 = 4;
-    public static final int SHOOTER_COVER_REVERSE_1 = 5;
-    public static final int SHOOTER_COVER_FORWARD_2 = 6;
-    public static final int SHOOTER_COVER_REVERSE_2 = 7;
+    public static final int TENSIONER_CYLS_FORWARD = 2;
+    public static final int TENIONER_CYLS_REVERSE= 3;
 
     // Shooter constants
     public static final int LEFT_SHOOTER_CAN_ID = 7;
@@ -43,8 +42,8 @@ public final class Constants {
     // Controller constants
     public static final int DRIVER_CONTROLLER_PORT = 0;
     public static final int OPERATOR_CONTROLLER_PORT = 1;
-    public static final double DRIVER_CONTROLLER_DEADBAND = 0.1;
-    public static final double OPERATOR_CONTROLLER_DEADBAND = 0.1;
+    public static final double DRIVER_CONTROLLER_DEADBAND = 0.2;
+    public static final double OPERATOR_CONTROLLER_DEADBAND = 0.2;
 
     // LED constants
     public static final int LED_PWM_PORT = 0;

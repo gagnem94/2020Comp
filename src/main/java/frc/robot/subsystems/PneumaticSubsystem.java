@@ -17,14 +17,14 @@ public class PneumaticSubsystem extends SubsystemBase {
 
   private Compressor compressor = new Compressor();
   private DoubleSolenoid intakeCyls = new DoubleSolenoid(Constants.INTAKE_CYLINDER_FORWARD, Constants.INTAKE_CYLINDER_REVERSE);
+  private DoubleSolenoid tensioner = new DoubleSolenoid(Constants.TENSIONER_CYLS_FORWARD, Constants.TENIONER_CYLS_REVERSE);
   //private DoubleSolenoid shooterCover1 = new DoubleSolenoid(Constants.SHOOTER_COVER_FORWARD_1, Constants.SHOOTER_COVER_REVERSE_1);
   //private DoubleSolenoid shooterCover2 = new DoubleSolenoid(Constants.SHOOTER_COVER_FORWARD_2, Constants.SHOOTER_COVER_REVERSE_2);
 
 
 
   private String intakeState = "Up";
-  private String shooterCoverState = "Closed";
-
+  private String tensionerState = "Up";
 
   public PneumaticSubsystem() {
 
@@ -44,19 +44,20 @@ public class PneumaticSubsystem extends SubsystemBase {
     }
   }
 
-  public void closeShooter() {
-    if (shooterCoverState.equals("Open")) {
-      //shooterCover1.set(Value.kForward);
-      //shooterCover2.set(Value.kForward);
+  public void tensionerUp() {
+    if (tensionerState.equals("Down")) {
+      tensioner.set(Value.kForward);
+      tensionerState = "Up";
     }
   }
 
-  public void openShooter() {
-    if (shooterCoverState.equals("Closed")) {
-      //  shooterCover1.set(Value.kReverse);
-      //shooterCover2.set(Value.kReverse);
+  public void tensionerDown() {
+    if (tensionerState.equals("Up")) {
+      tensioner.set(Value.kReverse);
+      tensionerState = "Down";
     }
   }
+
 
   public void startCompressor() {
     compressor.start();

@@ -21,6 +21,7 @@ public class VisionSubsystem extends SubsystemBase {
     ty = limelight.getEntry("ty").getDouble(0.0);
     tv = limelight.getEntry("tv").getDouble(0.0);
     setLed(3.0);
+    setCamMode(0.0);
   }
 
   public void setLed(double state) {
@@ -34,7 +35,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public void setPipeline(double pipeline) {
-    // 0 = initiation line, 1 = under trench
+    // 0 = initiation line, 1 = under trench, 2 = salsa shot
     limelight.getEntry("pipeline").setNumber(pipeline);
   }
 

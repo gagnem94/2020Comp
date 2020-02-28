@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AutoShootDriveBack;
 import frc.robot.commands.JoystickDrive;
+import frc.robot.commands.ShooterDefaultCommand;
 import frc.robot.commands.SpinUpShooter;
 import frc.robot.commands.VisionAlign;
 import frc.robot.subsystems.DriveSubsystem;
@@ -51,7 +53,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    drive.setDefaultCommand(new JoystickDrive(drive, driverController));
+    drive.setDefaultCommand(new JoystickDrive(drive, leds, driverController));
+    shooter.setDefaultCommand(new ShooterDefaultCommand(shooter));
+
+    autoChooser.addOption("Basic Auto", new AutoShootDriveBack(pneumatics, shooter, drive));
+    SmartDashboard.putData(autoChooser);
   }
 
   /**
@@ -62,15 +68,17 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value).whenPressed(() -> drive.toggleReversed());
-    new JoystickButton(driverController, XboxController.Button.kB.value).whenPressed(() -> drive.setMaxOutput(0.75));
-    new JoystickButton(driverController, XboxController.Button.kX.value).whenPressed(() -> drive.setMaxOutput(1.0));
-    new JoystickButton(driverController, XboxController.Button.kA.value).whileHeld(new VisionAlign(drive, vision, leds));
+    new JoystickButton(driverController, XboxController.Button.kB.value).whenPressed(new VisionAlign(drive, vision, leds, 1.0));
+    new JoystickButton(driverController, XboxController.Button.kY.value).whileHeld(new VisionAlign(drive, vision, leds, 0.0));
+    new JoystickButton(driverController, XboxController.Button.kA.value).whileHeld(new VisionAlign(drive, vision, leds, 2.0));
     new JoystickButton(operatorController, XboxController.Button.kA.value).whileHeld(() -> intake.intakeAndElevate());
     new JoystickButton(operatorController, XboxController.Button.kA.value).whenReleased(() -> intake.intakeAndElevateOff());
     new JoystickButton(operatorController, XboxController.Button.kB.value).whenPressed(() -> pneumatics.intakeDown());
     new JoystickButton(operatorController, XboxController.Button.kX.value).whenPressed(() -> pneumatics.intakeUp());
     new JoystickButton(operatorController, XboxController.Button.kBumperRight.value).whileHeld(new SpinUpShooter(shooter, shooterRPM));
-    new JoystickButton(operatorController, XboxController.Button.kBumperRight.value).whenReleased(() -> shooter.shooterOff()); 
+    new JoystickButton(operatorController, XboxController.Button.kBumperRight.value).whenReleased(() -> shooter.shooterOff());
+    new JoystickButton(operatorController, XboxController.Button.kBumperLeft.value).whileHeld(() -> pneumatics.tensionerUp());
+    new JoystickButton(operatorController, XboxController.Button.kBumperLeft.value).whenReleased(() -> pneumatics.tensionerDown()); 
   }
 
 

@@ -20,16 +20,16 @@ public class VisionAlign extends CommandBase {
   private VisionSubsystem visionSub;
   private LEDSubsystem ledSub;
 
-  private double steer_kp = 0.04;
-  private double drive_kp = 0.15;
+  private double steer_kp = 0.02;
+  private double drive_kp = 0.075;
 
-  private double yawFeedForward = 0.51;
-  private double driveFeedForward = 0.51;
+  private double yawFeedForward = 0.2;
+  private double driveFeedForward = 0.0;
 
   private double maxYaw = 0.75;
   private double maxThrottle = 0.75;
   
-  public VisionAlign(DriveSubsystem drive, VisionSubsystem vision, LEDSubsystem led) {
+  public VisionAlign(DriveSubsystem drive, VisionSubsystem vision, LEDSubsystem led, double pipeline) {
     // Use addRequirements() here to declare subsystem dependencies
     driveSub = drive;
     visionSub = vision;
@@ -38,9 +38,10 @@ public class VisionAlign extends CommandBase {
     addRequirements(visionSub);
     addRequirements(ledSub);
 
-    visionSub.setLed(3.0);
-    visionSub.setCamMode(0.0);
-
+    // visionSub.setLed(3.0);
+    // visionSub.setCamMode(0.0);
+    visionSub.setPipeline(pipeline);
+    
     SmartDashboard.putNumber("Steering kP", steer_kp);
     SmartDashboard.putNumber("Drive kP", drive_kp);
     SmartDashboard.putNumber("Drive FF", driveFeedForward);
@@ -59,8 +60,12 @@ public class VisionAlign extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double throttle = visionSub.getTy()*drive_kp;
-    double yaw = visionSub.getTx()*steer_kp;
+    double throttle = -visionSub.getTy()*drive_kp;
+    double yaw = 0.0;
+
+    if(visionSub.isYAlligned()){
+      yaw = visionSub.getTx()*steer_kp;
+    }
 
     
 
@@ -114,15 +119,15 @@ public class VisionAlign extends CommandBase {
     } else {
       driveSub.drive(0.0, 0.0);
     }
-    driveSub.drive(0.75*throttle, 0.75*yaw);
+    driveSub.drive(throttle, yaw);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveSub.drive(0.0, 0.0);
-    visionSub.setLed(1.0);
-    visionSub.setCamMode(1.0);
+    // visionSub.setLed(1.0);
+    // visionSub.setCamMode(1.0);
   }
 
   // Returns true when the command should end.

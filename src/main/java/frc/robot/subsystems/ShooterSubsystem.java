@@ -35,9 +35,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     rightShooter.restoreFactoryDefaults();
     leftShooter.restoreFactoryDefaults();
-    leftShooter.setInverted(true);
+    rightShooter.setInverted(true);
 
-    spinManual(0.05);
     SmartDashboard.putNumber("Left Shooter kP", leftkP);
     SmartDashboard.putNumber("Right Shooter kP",  rightkP);
     SmartDashboard.putNumber("Target RPM", 3300);

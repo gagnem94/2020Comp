@@ -7,71 +7,33 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class JoystickDrive extends CommandBase {
+public class ShooterDefaultCommand extends CommandBase {
 
-  private DriveSubsystem driveSub;
-  private XboxController driveController;
-  private LEDSubsystem ledSub;
+  private ShooterSubsystem shooterSub;
 
-  public JoystickDrive(DriveSubsystem drive, LEDSubsystem led, XboxController controller) {
+  public ShooterDefaultCommand(ShooterSubsystem shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
-    driveSub = drive;
-    ledSub = led;
-    driveController = controller;
-    addRequirements(driveSub);
+    shooterSub = shooter;
+    addRequirements(shooterSub);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ledSub.teleop();
-    double throttle = -driveController.getRawAxis(1);
-    double yaw = driveController.getRawAxis(4);
-
-    if (Math.abs(throttle) < Constants.DRIVER_CONTROLLER_DEADBAND) {
-      throttle = 0.0;
-    }
-
-    if (Math.abs(yaw) < Constants.DRIVER_CONTROLLER_DEADBAND) {
-      yaw = 0.0;
-    }
-
-    if (throttle > 1) {
-      throttle = 1;
-    }
-
-    if (throttle < -1) {
-      throttle = -1;
-    }
-
-    if (yaw > 1) {
-      yaw = 1;
-    }
-
-    if (yaw < -1) {
-      yaw = -1;
-    }
-
-    driveSub.drive(throttle, yaw);
-
+    shooterSub.spinManual(-0.15);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveSub.stop();
   }
 
   // Returns true when the command should end.
