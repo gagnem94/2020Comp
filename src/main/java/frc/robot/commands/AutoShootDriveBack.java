@@ -27,5 +27,6 @@ public class AutoShootDriveBack extends SequentialCommandGroup {
   //   super(new SpinUpShooter(shooter, 3200), 
   //         new ShooterOff(shooter)),
   //         new AutoDrive(drive, 1.0));
-  // }
+  // 
+  }
 }
