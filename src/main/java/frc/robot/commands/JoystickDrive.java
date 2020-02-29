@@ -64,7 +64,7 @@ public class JoystickDrive extends CommandBase {
       yaw = -1;
     }
 
-    driveSub.drive(throttle, yaw);
+    driveSub.drive(throttle, 0.6*yaw);
 
   }
 
