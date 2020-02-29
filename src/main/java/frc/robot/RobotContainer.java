@@ -58,7 +58,7 @@ public class RobotContainer {
     drive.setDefaultCommand(new JoystickDrive(drive, leds, driverController));
     shooter.setDefaultCommand(new ShooterDefaultCommand(shooter));
 
-    autoChooser.addOption("Basic Auto", new AutoShootDriveBack(pneumatics, shooter, drive));
+    autoChooser.addOption("Basic Auto", new AutoShootDriveBack(pneumatics, shooter, drive, leds, intake));
     SmartDashboard.putData(autoChooser);
   }
 

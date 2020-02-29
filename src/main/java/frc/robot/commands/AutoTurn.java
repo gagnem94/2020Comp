@@ -8,42 +8,52 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PneumaticSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 
-public class Shoot extends CommandBase {
+public class AutoTurn extends CommandBase {
 
-  private PneumaticSubsystem pneumaticSub;
-  private IntakeSubsystem intakeSub;
+  private DriveSubsystem driveSub;
+  private double angleTo;
+  private double rotateKp = 0.1;
+  private double headingError;
 
-  public Shoot(PneumaticSubsystem pneumatics, IntakeSubsystem intake) {
+  /**
+   * Creates a new AutoTurn.
+   */
+  public AutoTurn(DriveSubsystem drive, double angle) {
+    driveSub  = drive;
+    angleTo = angle;
+    addRequirements(driveSub);
     // Use addRequirements() here to declare subsystem dependencies.
-    pneumaticSub = pneumatics;
-    intakeSub = intake;
-    addRequirements(pneumaticSub);
-    addRequirements(intakeSub);
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pneumaticSub.tensionerUp();
-    intakeSub.elevatorOn();
+    driveSub.drive(0.0, 0.6);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    headingError = angleTo - driveSub.getAngle();
+    driveSub.drive(0.0, headingError*rotateKp);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    driveSub.drive(0.0, 0.0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    if (Math.abs(headingError) < 0.5) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
