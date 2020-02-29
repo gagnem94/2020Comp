@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
 //import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -20,10 +21,13 @@ public class VisionAlign extends CommandBase {
   private VisionSubsystem visionSub;
   private LEDSubsystem ledSub;
 
-  private double steer_kp = 0.02;
-  private double drive_kp = 0.075;
+  private PIDController throttlePID = new PIDController(0.055, 0.00, 0.0);
+  private PIDController yawPID = new PIDController(0.015, 0.02, 0.0);
 
-  private double yawFeedForward = 0.2;
+  private double steer_kp = 0.015;
+  private double drive_kp = 0.055;
+
+  private double yawFeedForward = 0.0;
   private double driveFeedForward = 0.0;
 
   private double maxYaw = 0.75;
@@ -60,11 +64,12 @@ public class VisionAlign extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double throttle = -visionSub.getTy()*drive_kp;
+    //ledSub.disabled();
+    double throttle = throttlePID.calculate(visionSub.getTy(), 0.0);
     double yaw = 0.0;
 
     if(visionSub.isYAlligned()){
-      yaw = visionSub.getTx()*steer_kp;
+      yaw = -yawPID.calculate(visionSub.getTx(), 0.0);
     }
 
     

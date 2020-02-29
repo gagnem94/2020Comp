@@ -60,6 +60,19 @@ public class LEDSubsystem extends SubsystemBase {
     led.setData(ledBuffer);
   }
 
+  public void shooterReady() {
+    Timer.delay(0.25);
+    for (int i = 0; i < ledBuffer.getLength(); i++) { // pattern: solid green
+      ledBuffer.setRGB(i, 0, 255, 0);
+    }
+    led.setData(ledBuffer);
+    Timer.delay(0.25);
+    for (int i = 0; i < ledBuffer.getLength(); i++) { // pattern: solid red
+      ledBuffer.setRGB(i, 0, 0, 0);
+    }
+    led.setData(ledBuffer);
+  }
+
   public void off() {
     for (int i = 0; i < ledBuffer.getLength(); i++) { // pattern: off
       ledBuffer.setRGB(i, 0, 0, 0);

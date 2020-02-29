@@ -30,7 +30,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void elevatorOn() {
-    elevatorMotor.set(1.0);
+    elevatorMotor.set(0.6); // 0.6 at initiation
   }
 
   public void elevatorOff() {
@@ -40,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public void intakeAndElevate() {
     sideRollers.set(-1.0);
     elevatorMotor.set(0.5);
-    dingusMotor.set(-0.3);
+    dingusMotor.set(-0.6);
     }
 
   public void intakeAndElevateOff() {

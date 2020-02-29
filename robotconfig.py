@@ -1,14 +1,14 @@
 {
     # Warning: This project type is for BRUSHLESS motors ONLY!
     # Ports for the left-side motors
-    "leftMotorPorts": [1, 2],
+    "leftMotorPorts": [0, 1],
     # Ports for the right-side motors
-    "rightMotorPorts": [3, 4],
+    "rightMotorPorts": [2, 3],
     # Note: Inversions of the slaves (i.e. any motor *after* the first on
     # each side of the drive) are *with respect to their master*.  This is
     # different from the other poject types!
     # Inversions for the left-side motors
-    "leftMotorsInverted": [False, False],
+    "leftMotorsInverted": [True, False],
     # Inversions for the right side motors
     "rightMotorsInverted": [False, False],
     # The total gear reduction between the motor and the wheels, expressed as
@@ -17,7 +17,7 @@
     # Wheel diameter (in units of your choice - will dictate units of analysis)
     "wheelDiameter": 0.127,
     # Your gyro type (one of "NavX", "Pigeon", "ADXRS450", "AnalogGyro", or "None")
-    "gyroType": "NavX",
+    "gyroType": "Navx",
     # Whatever you put into the constructor of your gyro
     # Could be:
     # "SPI.Port.kMXP" (MXP SPI port for NavX or ADXRS450),

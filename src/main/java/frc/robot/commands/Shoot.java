@@ -7,38 +7,33 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.PneumaticSubsystem;
 
-public class SpinUpShooter extends CommandBase {
+public class Shoot extends CommandBase {
 
-  private double targetRPM;
-  private ShooterSubsystem shooterSub;
-  private LEDSubsystem ledSub;
+  private PneumaticSubsystem pneumaticSub;
+  private IntakeSubsystem intakeSub;
 
-  public SpinUpShooter(ShooterSubsystem shooter, LEDSubsystem led, double target) {
+  public Shoot(PneumaticSubsystem pneumatics, IntakeSubsystem intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    targetRPM = target;
-    shooterSub = shooter;
-    ledSub = led;
-    addRequirements(shooter);
-    addRequirements(ledSub);
+    pneumaticSub = pneumatics;
+    intakeSub = intake;
+    addRequirements(pneumaticSub);
+    addRequirements(intakeSub);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    pneumaticSub.tensionerUp();
+    intakeSub.elevatorOn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterSub.spinAuto(targetRPM);
-    if (shooterSub.shooterReady()) {
-      ledSub.shooterReady();
-    }
   }
 
   // Called once the command ends or is interrupted.
@@ -49,6 +44,6 @@ public class SpinUpShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return SmartDashboard.getBoolean("Shooter Ready:", false);
+    return false;
   }
 }

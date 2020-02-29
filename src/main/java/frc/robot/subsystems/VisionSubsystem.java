@@ -35,7 +35,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public void setPipeline(double pipeline) {
-    // 0 = initiation line, 1 = under trench, 2 = salsa shot
+    // 0 = initiation line, 1 = trench, 2 = salsa shot
     limelight.getEntry("pipeline").setNumber(pipeline);
   }
 

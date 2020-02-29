@@ -27,8 +27,10 @@ public class ShooterSubsystem extends SubsystemBase {
   private double leftkP = 0.0002;
   private double rightkP = 0.0002;
 
-  private PIDController leftPID = new PIDController(0.00015, 0.0002, 0.000025);
-  private PIDController rightPID = new PIDController(0.00015, 0.0002, 0.000025);
+  private PIDController leftPID = new PIDController(1/3300, 0.0002, 0.000025);
+  private PIDController rightPID = new PIDController(1/3300, 0.0002, 0.000025);
+
+  private boolean targetHit = false;
 
     // 3000 rpm at initiation line
 
@@ -42,8 +44,8 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Target RPM", 3300);
     
 
-    leftPID.setTolerance(10, 30);
-    rightPID.setTolerance(10, 30);
+    leftPID.setTolerance(10, 100);
+    rightPID.setTolerance(10, 100);
 
   }
 
@@ -61,16 +63,28 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void spinAuto(double targetRPM) {
-    double left = leftPID.calculate(getLeftRPM(), targetRPM);
-    double right = rightPID.calculate(getRightRPM(), targetRPM);
+    double left = 0.8; //0.9 for initiation line
+    double right = 0.8;
+
+    //if(getLeftRPM() > targetRPM * 0.75 && getRightRPM() > targetRPM * 0.75){
+      //left = leftPID.calculate(getLeftRPM(), targetRPM);
+      //right = rightPID.calculate(getRightRPM(), targetRPM);
+    //}
+    
 
     if (left < 0) {
       left = 0.0;
     }
+    if (right < 0){
+      right = 0.0;
+    }
+
     leftShooter.set(left);
     rightShooter.set(right);
+
     if (leftPID.atSetpoint() && rightPID.atSetpoint()) {
       SmartDashboard.putBoolean("Shooter Ready:", true);
+      targetHit = true;
     } else {
       SmartDashboard.putBoolean("Shooter Ready:", false);
     }
@@ -80,6 +94,11 @@ public class ShooterSubsystem extends SubsystemBase {
   public void shooterOff() {
     leftShooter.set(0.0);
     rightShooter.set(0.0);
+    targetHit = false;
+  }
+
+  public boolean shooterReady() {
+    return targetHit;
   }
 
   @Override
