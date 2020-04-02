@@ -49,8 +49,13 @@ public class DriveSubsystem extends SubsystemBase {
     leftSlave.follow(leftMaster);
     rightSlave.follow(rightMaster);
 
+<<<<<<< HEAD
     leftEnc.setPositionConversionFactor(0.4); 
     rightEnc.setPositionConversionFactor(0.4);
+=======
+    leftEnc.setPositionConversionFactor(0.4/7.5); // change these
+    rightEnc.setPositionConversionFactor(0.4/7.5);
+>>>>>>> 3f908dc9db14b61becff8a055b694b13f16dc471
 
     resetEncoders();
     resetGyro();
@@ -130,6 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     odometry.update(Rotation2d.fromDegrees(getHeading()), leftEnc.getPosition(), rightEnc.getPosition());
     SmartDashboard.putBoolean("Drive Reversed", isReversed());
+    SmartDashboard.putNumber("Distance", getAvgDistance());
   }
 
 }

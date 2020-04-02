@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -24,13 +23,16 @@ public class AutoShootDriveBack extends SequentialCommandGroup {
    * Creates a new AutoShootDriveBack.
    */
   public AutoShootDriveBack(PneumaticSubsystem pneumatics, ShooterSubsystem shooter, DriveSubsystem drive, LEDSubsystem led, IntakeSubsystem intake)  {
-    //new IntakeDown(pneumatics);
-    new SpinUpShooter(shooter, led, 1.0);
-    new WaitCommand(500);
-    new Shoot(pneumatics, intake);
-    new WaitCommand(2000);
-    new ShooterOff(shooter);
-    //new AutoTurn(drive, 5.0);
+    super(//new IntakeDown(pneumatics);
+    new AutoSpinUp(shooter),
+    new WaitCommand(0.5),
+    new Shoot(pneumatics, intake),
+    new WaitCommand(3),
+    new ShootOff(pneumatics, intake),
+    new ShooterOff(shooter),
+    new AutoTurn(drive, 10.0),
+    new AutoDrive(drive, 0.5)
+    );
 
 
     // Add your commands in the super() call, e.g.

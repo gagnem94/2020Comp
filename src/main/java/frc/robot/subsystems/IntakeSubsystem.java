@@ -39,7 +39,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void intakeAndElevate() {
     sideRollers.set(-1.0);
-    elevatorMotor.set(0.5);
+    elevatorMotor.set(0.6);
     dingusMotor.set(-0.6);
     }
 

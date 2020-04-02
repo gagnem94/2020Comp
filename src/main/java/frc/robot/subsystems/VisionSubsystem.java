@@ -20,6 +20,7 @@ public class VisionSubsystem extends SubsystemBase {
     tx = limelight.getEntry("tx").getDouble(0.0);
     ty = limelight.getEntry("ty").getDouble(0.0);
     tv = limelight.getEntry("tv").getDouble(0.0);
+    setPipeline(1.0);
     setLed(3.0);
     setCamMode(0.0);
   }
