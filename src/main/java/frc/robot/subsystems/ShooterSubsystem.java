@@ -25,7 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private CANEncoder rightEnc = rightShooter.getEncoder();
 
   private double leftkP = 0.0002;
-  private double rightkP = 0.0002;
+  private double rightkP = 0.0002;  
 
   private PIDController leftPID = new PIDController(1/3300, 0.0002, 0.000025);
   private PIDController rightPID = new PIDController(1/3300, 0.0002, 0.000025);

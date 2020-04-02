@@ -49,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
     leftSlave.follow(leftMaster);
     rightSlave.follow(rightMaster);
 
-    leftEnc.setPositionConversionFactor(0.4); // change these
+    leftEnc.setPositionConversionFactor(0.4); 
     rightEnc.setPositionConversionFactor(0.4);
 
     resetEncoders();
