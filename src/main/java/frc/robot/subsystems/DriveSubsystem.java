@@ -49,13 +49,8 @@ public class DriveSubsystem extends SubsystemBase {
     leftSlave.follow(leftMaster);
     rightSlave.follow(rightMaster);
 
-<<<<<<< HEAD
-    leftEnc.setPositionConversionFactor(0.4); 
-    rightEnc.setPositionConversionFactor(0.4);
-=======
-    leftEnc.setPositionConversionFactor(0.4/7.5); // change these
+    leftEnc.setPositionConversionFactor(0.4/7.5); 
     rightEnc.setPositionConversionFactor(0.4/7.5);
->>>>>>> 3f908dc9db14b61becff8a055b694b13f16dc471
 
     resetEncoders();
     resetGyro();
@@ -88,8 +83,8 @@ public class DriveSubsystem extends SubsystemBase {
       rightMaster.set(maxOutput * (throttle-yaw));
 
     } else {
-      leftMaster.set(maxOutput * (-throttle+yaw)); //-throttle+yaw
-      rightMaster.set(maxOutput * (-throttle-yaw)); //-throttle-yaw
+      leftMaster.set(maxOutput * (-throttle+yaw));
+      rightMaster.set(maxOutput * (-throttle-yaw));
     }
     
   }

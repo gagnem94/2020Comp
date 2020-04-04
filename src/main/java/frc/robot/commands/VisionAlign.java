@@ -26,6 +26,7 @@ public class VisionAlign extends CommandBase {
 
   private double steer_kp = 0.015;
   private double drive_kp = 0.055;
+  private double pipeline;
 
   private double yawFeedForward = 0.0;
   private double driveFeedForward = 0.0;
@@ -38,13 +39,10 @@ public class VisionAlign extends CommandBase {
     driveSub = drive;
     visionSub = vision;
     ledSub = led;
+    this.pipeline = pipeline;
     addRequirements(driveSub);
     addRequirements(visionSub);
     addRequirements(ledSub);
-
-    // visionSub.setLed(3.0);
-    // visionSub.setCamMode(0.0);
-    visionSub.setPipeline(pipeline);
     
     SmartDashboard.putNumber("Steering kP", steer_kp);
     SmartDashboard.putNumber("Drive kP", drive_kp);
@@ -55,6 +53,9 @@ public class VisionAlign extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    visionSub.setLed(3.0);
+    visionSub.setCamMode(0.0); // switch to vision pipeline
+    visionSub.setPipeline(pipeline); // set the target pipeline
     // steer_kp = SmartDashboard.getNumber("Steering kP", 0.0);
     // drive_kp = SmartDashboard.getNumber("Drive kP", 0.0);
     // yawFeedForward = SmartDashboard.getNumber("Yaw FF", 0.0);
@@ -131,8 +132,8 @@ public class VisionAlign extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     driveSub.drive(0.0, 0.0);
-    // visionSub.setLed(1.0);
-    // visionSub.setCamMode(1.0);
+    visionSub.setLed(1.0);
+    visionSub.setCamMode(1.0);
   }
 
   // Returns true when the command should end.
